@@ -9,6 +9,7 @@ var util = require('util');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var settings = require('./settings');
+var mylogger = require('./logService');
 
 
 var routes = require('./routes/index');
@@ -30,7 +31,7 @@ app.locals = {
   error: function (req, res) {
     var err = req.session.error;
     if (err){
-      console.log('===============' + JSON.stringify(err));
+      mylogger.error(err);
       return err;
     }
     else
@@ -79,6 +80,7 @@ if (app.get('env') === 'development') {
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
+      layout: false,
       message: err.message,
       error: err
     });
@@ -90,6 +92,7 @@ if (app.get('env') === 'development') {
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
+    layout: false,
     message: err.message,
     error: {}
   });

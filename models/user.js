@@ -1,4 +1,5 @@
 var mongodb = require('./db');
+var logger = require('../logService');
 
 function User(user) {
   this.name = user.name;
@@ -6,6 +7,7 @@ function User(user) {
 }
 
 User.prototype.save = function save(callback) {
+  logger.enter('User.save');
   // 存入 Mongodb 的文档
   var user = {
     name: this.name,
@@ -33,6 +35,7 @@ User.prototype.save = function save(callback) {
 };
 
 User.get = function get(username, callback) {
+  logger.enter('User.get');
   mongodb.open(function (err, db) {
     if (err) {
       return callback(err);
@@ -40,6 +43,7 @@ User.get = function get(username, callback) {
     // 读取 users 集合 
     db.collection('users', function (err, collection) {
       if (err) {
+        logger.error(err);
         mongodb.close();
         return callback(err);
       }
