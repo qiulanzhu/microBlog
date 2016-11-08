@@ -7,10 +7,17 @@ var logger = require('../logService.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: '首页',
-    req: req,
-    res: res
+  Post.get( null, function (err, posts) {
+    if (err) {
+      posts = [];
+    }
+
+    res.render('index', {
+      title: '首页',
+      req: req,
+      res: res,
+      posts: posts
+    });
   });
 });
 
@@ -86,7 +93,7 @@ router.post('/login', function(req, res) {
       return  res.redirect('/login');
     }
     req.session.user = user;
-    req.session.error = '登入成功';
+    req.session.success = '登入成功';
     res.redirect('/');
   });
 });
