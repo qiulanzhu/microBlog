@@ -120,6 +120,7 @@ router.post('/post',  function (req, res) {
 });
 
 router.get('/u/:user', function (req, res) {
+  logger.debug(req.url);
   User.get(req.params.user,  function (err, user) {
     if (!user) {
       req.session.error = '用户不存在';
